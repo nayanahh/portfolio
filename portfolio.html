@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nayana's Quest | Developer Portfolio</title>
+    <!-- Retro Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #fdfcfb;
+            --border-color: #4a416e;
+            --lavender: #dcd6f7;
+            --mint: #b8f2e6;
+            --peach: #ffeddf;
+            --text: #4a416e;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            font-size: 1.4rem;
+            image-rendering: pixelated;
+            overflow-x: hidden;
+        }
+
+        /* --- Animated Pixel Background --- */
+        #pixel-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            background: linear-gradient(to bottom, #fdfcfb, #eef1f5);
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--lavender);
+            opacity: 0.3;
+            width: 10px;
+            height: 10px;
+            bottom: -20px;
+            animation: float Up 10s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            background: var(--white);
+            border-bottom: 4px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            z-index: 1000;
+            gap: 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            padding: 8px 12px;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        nav a:hover {
+            background: var(--lavender);
+            box-shadow: 4px 4px 0 var(--border-color);
+            transform: translateY(-2px);
+        }
+
+        /* --- Global Layout & Scroll Animations --- */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 100px 20px 40px 20px;
+        }
+
+        .pixel-card {
+            border: 4px solid var(--border-color);
+            background: var(--white);
+            box-shadow: 8px 8px 0 rgba(74, 65, 110, 0.1);
+            padding: 30px;
+            margin-bottom: 50px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .pixel-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Glitch Effect for Headers --- */
+        h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--border-color);
+            position: relative;
+        }
+
+        h2:hover {
+            animation: glitch 0.3s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); text-shadow: -2px 0 var(--mint), 2px 0 var(--lavender); }
+            25% { transform: translate(-2px, 2px); }
+            50% { transform: translate(2px, -2px); }
+            75% { transform: translate(-1px, -1px); }
+            100% { transform: translate(0); }
+        }
+
+        /* --- Hero Section --- */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero-emoji {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: wave 2s infinite ease-in-out;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(-5deg) scale(1); }
+            50% { transform: rotate(10deg) scale(1.1); }
+        }
+
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.8rem;
+            color: var(--lavender);
+            text-shadow: 4px 4px var(--border-color);
+            margin-bottom: 15px;
+        }
+
+        .cv-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: var(--mint);
+            border: 4px solid var(--border-color);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            color: var(--text);
+            cursor: pointer;
+            box-shadow: 6px 6px 0 var(--border-color);
+            text-decoration: none;
+            transition: 0.1s;
+            animation: bounce 2s infinite;
+        }
+
+        .cv-btn:hover {
+            animation: none;
+            background: var(--lavender);
+            transform: scale(1.05);
+        }
+
+        @keyframes bounce {
+            0%, 100%, 20%, 50%, 80% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* --- Stats/Skills --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item { margin-bottom: 15px; }
+        .stat-name { font-family: 'Press Start 2P', cursive; font-size: 0.55rem; margin-bottom: 8px; }
+        .stat-bar { height: 18px; border: 3px solid var(--border-color); background: #f0f0f0; overflow: hidden; }
+        .stat-fill { 
+            height: 100%; 
+            background: var(--lavender); 
+            width: 0%; /* Start at 0 for animation */
+            transition: width 1.5s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+
+        /* --- Projects --- */
+        .quest-box {
+            margin-bottom: 30px;
+            border-bottom: 2px dashed var(--border-color);
+            padding-bottom: 20px;
+            transition: transform 0.3s;
+        }
+
+        .quest-box:hover {
+            transform: translateX(10px);
+        }
+
+        .quest-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+            color: var(--text);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .pixel-btn {
+            text-decoration: none;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: 8px 12px;
+            border: 3px solid var(--border-color);
+            color: var(--text);
+            box-shadow: 4px 4px 0 var(--border-color);
+            transition: 0.1s;
+        }
+
+        .pixel-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--border-color);
+        }
+
+        .pixel-btn:active { box-shadow: 0 0 0; transform: translate(4px, 4px); }
+        .btn-live { background: var(--lavender); }
+        .btn-git { background: var(--peach); }
+
+        /* --- Education --- */
+        .edu-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #fafafa;
+            border-left: 0px solid var(--lavender);
+            transition: all 0.3s;
+        }
+
+        .edu-item:hover {
+            border-left: 8px solid var(--lavender);
+            background: #fff;
+            padding-left: 15px;
+        }
+
+        /* --- Contact --- */
+        .contact-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .icon-box {
+            font-size: 2rem;
+            color: var(--text);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .icon-box:hover {
+            color: var(--lavender);
+            transform: scale(1.3) rotate(10deg);
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 600px) {
+            nav { gap: 5px; flex-wrap: wrap; }
+            nav a { font-size: 0.45rem; padding: 5px; }
+            h1 { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="pixel-bg"></div>
+
+    <nav>
+        <a href="#about">ABOUT</a>
+        <a href="#skills">SKILLS</a>
+        <a href="#projects">QUESTS</a>
+        <a href="#education">STUDY</a>
+        <a href="#contact">CONTACT</a>
+    </nav>
+
+    <div class="container">
+        
+        <!-- Header -->
+        <header>
+            <!-- <div class="hero-emoji">👩🏽‍💻</div> -->
+            <h1>NAYANA C S</h1>
+            <p style="font-family: 'Press Start 2P'; font-size: 0.7rem;">LVL 21: PYTHON FULL STACK DEVELOPER</p>
+            <p style="color: #888; margin-top: 5px;">📍 Palakkad, Kerala</p>
+            <a href="nayana_pythonfullstackdeveloper.pdf" class="cv-btn"><i class="fas fa-download"></i> DOWNLOAD CV</a>
+        </header>
+
+        <!-- About Section -->
+        <section id="about" class="pixel-card reveal">
+            <h2>LOG: PLAYER PROFILE</h2>
+            <p id="typewriter" style="min-height: 80px;">
+                <!-- Typewriter effect will fill this -->
+            </p>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="pixel-card reveal">
+            <h2>STATISTICS</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <p class="stat-name">BACKEND (PYTHON/DJANGO)</p>
+                    <div class="stat-bar"><div class="stat-fill" data-width="90%"></div></div>
+                </div>
+                <div class="stat-item">
+                    <p class="stat-name">FRONTEND (HTML/CSS/JS/BOOTSTRAP)</p>
+                    <div class="stat-bar"><div class="stat-fill" data-width="85%" style="background: var(--mint);"></div></div>
+                </div>
+                <div class="stat-item">
+                    <p class="stat-name">DATABASE (MYSQL/SQLITE)</p>
+                    <div class="stat-bar"><div class="stat-fill" data-width="80%" style="background: var(--peach);"></div></div>
+                </div>
+                <div class="stat-item">
+                    <p class="stat-name">TOOLS (GIT/VS CODE)</p>
+                    <div class="stat-bar"><div class="stat-fill" data-width="85%"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="pixel-card reveal">
+            <h2>QUEST LOG (PROJECTS)</h2>
+            
+            <div class="quest-box">
+                <div class="quest-title">💎 THE GYM LANDING PAGE</div>
+                <p>A high-performance landing page for pixel-perfect fitness centers. Featuring responsive schedules and trainer profiles.</p>
+                <div class="btn-group">
+                    <a href="https://the-gym-8uuo.onrender.com" class="pixel-btn btn-live">LIVE DEMO</a>
+                    <a href="https://github.com/nayanahh/THE-GYM" class="pixel-btn btn-git">GITHUB</a>
+                </div>
+            </div>
+
+            <div class="quest-box">
+                <div class="quest-title">🛒 SCOOP IT UP E-COMMERCE WEBSITE</div>
+                <p>Full-stack platform with product listing, user authentication, cart, and checkout logic via Django ORM.</p>
+                <div class="btn-group">
+                    <a href="https://scoop-it-up.onrender.com" class="pixel-btn btn-live">LIVE DEMO</a>
+                    <a href="https://github.com/nayanahh/scoop-it-up" class="pixel-btn btn-git">GITHUB</a>
+                </div>
+            </div>
+
+            <div class="quest-box">
+                <div class="quest-title">🏥 MEDCARE PLATFORM</div>
+                <p>Healthcare appointment booking system for doctor discovery and user-friendly UI using Bootstrap.</p>
+                <div class="btn-group">
+                    <a href="https://medcarecom.netlify.app/" class="pixel-btn btn-live">LIVE DEMO</a>
+                    <a href="https://github.com/nayanahh" class="pixel-btn btn-git">GITHUB</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="pixel-card reveal">
+            <h2>LEVEL UPS (EDUCATION)</h2>
+            <div class="edu-item">
+                <div>
+                    <strong>DIPLOMA IN PYTHON FULL STACK DEVELOPMENT</strong>
+                    <br><span style="font-size: 0.9rem;">D soft technologies</span>
+                </div>
+                <span>2025 - 2026</span>
+            </div>
+            <div class="edu-item">
+                <div>
+                    <strong>BCA - CCST College</strong>
+                    <br><span style="font-size: 0.9rem;">Cherupalassery</span>
+                </div>
+                <span>2022 - 2025</span>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="pixel-card reveal">
+            <h2>SAVE POINT (CONTACT)</h2>
+            <div class="contact-icons">
+                <a href="https://www.linkedin.com/in/nayana-cs" class="icon-box" title="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/nayanahh" class="icon-box" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="tel:8078358204" class="icon-box" title="Phone">
+                    <i class="fas fa-phone"></i>
+                </a>
+                <a href="mailto:cs.nayana123@gmail.com" class="icon-box" title="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </section>
+
+        <footer style="text-align: center; padding: 20px; font-family: 'Press Start 2P'; font-size: 0.5rem;">
+            © 2026 NAYANA C S • PRESS START TO START
+        </footer>
+
+    </div>
+
+    <script>
+        // --- Generate Pixel Particles ---
+        const bg = document.getElementById('pixel-bg');
+        for (let i = 0; i < 20; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.width = p.style.height = (Math.random() * 10 + 5) + 'px';
+            p.style.animationDelay = Math.random() * 10 + 's';
+            p.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            bg.appendChild(p);
+        }
+
+        // --- Intersection Observer for Scroll Animations ---
+        const observerOptions = { threshold: 0.2 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // If it's the skills section, animate bars
+                    if(entry.target.id === 'skills') {
+                        const bars = entry.target.querySelectorAll('.stat-fill');
+                        bars.forEach(bar => {
+                            bar.style.width = bar.getAttribute('data-width');
+                        });
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.pixel-card').forEach(card => observer.observe(card));
+
+        // --- Typewriter Effect ---
+        const text = "Python Full Stack Developer (Fresher) with strong hands-on training in Python, Django, and web development. Passionate about building full-stack applications and solving complex logic riddles!";
+        let i = 0;
+        function typewriter() {
+            if (i < text.length) {
+                document.getElementById("typewriter").innerHTML = text.substring(0, i+1) + "█";
+                i++;
+                setTimeout(typewriter, 35);
+            } else {
+                document.getElementById("typewriter").innerHTML = text;
+            }
+        }
+        
+        // Start typewriter when section is visible
+        const aboutSection = document.getElementById('about');
+        const aboutObserver = new IntersectionObserver((entries) => {
+            if(entries[0].isIntersecting) {
+                typewriter();
+                aboutObserver.disconnect();
+            }
+        });
+        aboutObserver.observe(aboutSection);
+    </script>
+</body>
+</html>
